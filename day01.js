@@ -1,8 +1,6 @@
 
-let puzzleInput;
-
 const whenFileLoaded = (reader, callback) => {
-    puzzleInput = reader.result
+    const puzzleInput = reader.result
                     .split(/\n/)
     console.log(puzzleInput);
     callback(puzzleInput);
