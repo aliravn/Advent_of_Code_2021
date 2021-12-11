@@ -1,26 +1,25 @@
-// test if the function is correct
-const testInput = [199,200,208,210,200,207,240,269,260,263];
 
-//read out puzzle input from a text file parse it into int numbers
-let rawData;
-const readTextFile = (file) => {
-    const rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = () => {
-        if(rawFile.readyState === 4) {
-            if(rawFile.status === 200 || rawFile.status == 0) {
-                const allText = rawFile.responseText;
-                rawData = allText.split(/\n/);
-            }
-        }
-    }
-    rawFile.send(null);
+let puzzleInput;
+
+const whenFileLoaded = (reader, callback) => {
+    puzzleInput = reader.result
+                    .split(/\n/)
+    console.log(puzzleInput);
+    callback(puzzleInput);
 }
-readTextFile("file:///home/alira/Documents/1-Programming/2-Advent_of_Code_2021/input01");
+    
+const readFile = (callback) => {
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    reader.onload = () => whenFileLoaded(reader, callback);
+    reader.readAsText(file);
+}
 
-const puzzleInput = rawData.map(item => parseInt(item, 10));
+const parseAsNumbers = (input) => {
+    const parsedPuzzleInput = input.map(item => parseInt(item, 10));
+    return parsedPuzzleInput;
+}
 
-// solution
 const compareDepths = (data) => {
     let count = 0;
     for(i = 1; i < data.length; i++) {
@@ -29,22 +28,25 @@ const compareDepths = (data) => {
         }
     } 
     return count;
-    
 }
 
-const result011 = compareDepths(puzzleInput);
-
-// adjust the input array
-const parsedPuzzleInput = [];
-const parseInputBySetsOfThree = (initialArray) => {
+const parseBySetsOfThree = (initialArray) => {
+    const parsedPuzzleInput = [];
     for(i = 0; i < (initialArray.length - 2); i++) {
         const sum = initialArray[i] + initialArray[i+1] + initialArray[i+2];
         parsedPuzzleInput.push(sum);
-    }     
+    }
+    return parsedPuzzleInput;
 }
-parseInputBySetsOfThree(puzzleInput)
 
-const result012 = compareDepths(parsedPuzzleInput);
+const day01 = (input) => {
+    const parsedInput01 = parseAsNumbers(input);
+    const result011 = compareDepths(parsedInput01);
+    const parsedInput02 = parseBySetsOfThree(parsedInput01);
+    const result012 = compareDepths(parsedInput02);
+    document.getElementById("day011").innerHTML = result011;
+    document.getElementById("day012").innerHTML = result012;
+}
 
-document.getElementById("day011").innerHTML = result011;
-document.getElementById("day012").innerHTML = result012;
+const fileInput = document.getElementById('fileInput');
+fileInput.addEventListener('change', () => readFile(day01));
