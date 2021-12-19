@@ -1,4 +1,3 @@
-
 const whenFileLoaded = (reader, callback) => {
     const puzzleInput = reader.result
                     .split(/\n/)
@@ -12,6 +11,13 @@ const readFile = (callback) => {
     reader.onload = () => whenFileLoaded(reader, callback);
     reader.readAsText(file);
 }
+	
+const fileInput = document.getElementById('fileInput');
+fileInput.addEventListener('change', () => readFile(day01));
+
+
+// ========== DAY 1 ============ //
+
 
 const parseAsNumbers = (input) => {
     const parsedPuzzleInput = input.map(item => parseInt(item, 10));
@@ -46,5 +52,3 @@ const day01 = (input) => {
     document.getElementById("day012").innerHTML = result012;
 }
 
-const fileInput = document.getElementById('fileInput');
-fileInput.addEventListener('change', () => readFile(day01));
